@@ -1,0 +1,66 @@
+.fb-chat {
+	position: fixed;
+	display: block;
+	z-index: auto;
+}
+
+.fbtooltip {
+	width: 120px;
+	background-color: #fff;
+	color: #2c2c2c;
+	text-align: center;
+	padding: 5px 0;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	top: 6px;
+	text-transform: uppercase;
+}
+
+.fb-chat.fb-chat-top_right .fbtooltip,
+.fb-chat.fb-chat-bottom_right .fbtooltip {
+	right: 54px;
+}
+
+.fb-chat.fb-chat-top_left .fbtooltip,
+.fb-chat.fb-chat-bottom_left .fbtooltip {
+	left: 54px;
+}
+
+.fb-chat-bottom_right {
+	bottom: 50px;
+	right: 50px;
+}
+
+.fb-chat-bottom_left {
+	bottom: 50px;
+	left: 50px;
+}
+
+.fb-chat-top_right {
+	top: 50px;
+	right: 50px;
+}
+
+.fb-chat-top_left {
+	top: 50px;
+	left: 50px;
+}
+
+body.admin-bar #fb-chat.fb-chat-top_right,
+body.admin-bar #fb-chat.fb-chat-top_left, {
+	top: 82px !important;
+}
+
+#fb-chat-link img {
+	width: 50px;
+}
+
+#fb-chat-link span {
+	z-index: 99999999;
+	position: absolute;
+	display: none;
+}
+
+#fb-chat-link:hover span {
+	display: block;
+}
