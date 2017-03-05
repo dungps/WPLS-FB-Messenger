@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Facebook Message
  * Description: Chat with your customer using Facebook Messenger
- * Author: Oryc
- * Author URI: http://dungps.xyz
+ * Author: Kevin
+ * Author URI: http://dungps.com
  * Version: 1.0.0
  * Text Domain: fb-chat
  */
@@ -35,7 +35,8 @@ function fb_chat_load_textdomain() {
 
 add_action( 'admin_menu', 'fb_chat_admin_page' );
 function fb_chat_admin_page() {
-	add_menu_page(
+	add_submenu_page(
+		'tools.php',
 		__( 'FB Chat', 'fb-chat' ),
 		__( 'FB Chat', 'fb-chat' ),
 		'manage_options',
@@ -48,11 +49,50 @@ add_action( 'admin_init', 'fb_chat_admin_page_register_settings' );
 function fb_chat_admin_page_register_settings() {
 	add_settings_section( 'fb_chat_settings', null, false, 'fb_chat_settings' );
 
-	add_settings_field( 'fb_chat_settings[username]', __( 'Facebook Username', 'fb-chat' ), 'fb_chat_text_field', 'fb_chat_settings', 'fb_chat_settings', array( 'id' => 'username', 'name' => 'fb_chat_settings[username]', 'placeholder' => __( 'Your Facebook Username', 'fb-chat' ), 'value' => fb_chat_get_option( 'username' ) ) );
+	add_settings_field(
+		'fb_chat_settings[username]',
+		__( 'Facebook Username', 'fb-chat' ),
+		'fb_chat_text_field',
+		'fb_chat_settings',
+		'fb_chat_settings',
+		array(
+			'id' => 'username',
+			'name' => 'fb_chat_settings[username]',
+			'placeholder' => __( 'Your Facebook Username', 'fb-chat' ),
+			'value' => fb_chat_get_option( 'username' )
+		) 
+	);
 
-	add_settings_field( 'fb_chat_settings[position]', __( 'Widget Position', 'fb-chat' ), 'fb_chat_select', 'fb_chat_settings', 'fb_chat_settings', array( 'id' => 'position', 'name' => 'fb_chat_settings[position]', 'selected' => fb_chat_get_option( 'position', 'bottom_right' ), 'option_all' => false, 'option_none' => false, 'options' => array( 'top_left' => __( 'Top Left', 'fb-chat' ), 'top_right' => __( 'Top Right', 'fb-chat' ), 'bottom_left' => __( 'Bottom Left', 'fb-chat' ), 'bottom_right' => __( 'Bottom Right', 'fb-chat' ) ) ) );
+	add_settings_field( 
+		'fb_chat_settings[position]',
+		__( 'Widget Position', 'fb-chat' ),
+		'fb_chat_select', 'fb_chat_settings', 'fb_chat_settings',
+		array(
+			'id' => 'position',
+			'name' => 'fb_chat_settings[position]',
+			'selected' => fb_chat_get_option( 'position', 'bottom_right' ),
+			'option_all' => false,
+			'option_none' => false,
+			'options' => array(
+				'bottom_left' => __( 'Bottom Left', 'fb-chat' ),
+				'bottom_right' => __( 'Bottom Right', 'fb-chat' )
+			)
+		)
+	);
 
-	add_settings_field( 'db_chat_settings[online_time]', __( 'Online Time', 'fb-chat' ), 'fb_chat_online_time_display', 'fb_chat_settings', 'fb_chat_settings' );
+	add_settings_field(
+		'fb_chat_settings[text]',
+		__( 'Message Text', 'fb-chat' ),
+		'fb_chat_text_field', 'fb_chat_settings',
+		'fb_chat_settings',
+		array(
+			'id' => 'text',
+			'name' => 'fb_chat_settings[text]',
+			'value' => fb_chat_get_option( 'text', __( 'Message Us', 'fb-chat' ) ),
+			'option_all' => false,
+			'option_none' => false
+		)
+	);
 
 	register_setting( 'fb_chat_settings', 'fb_chat_settings' );
 }
@@ -240,16 +280,23 @@ add_action( 'wp_footer', 'fb_chat_footer' );
 function fb_chat_footer() {
 	$username = fb_chat_get_option( 'username', false );
 	$position = fb_chat_get_option( 'position', 'bottom_right' );
+	$message = fb_chat_get_option( 'text', __( 'Message Us', 'fb-chat' ) );
+	$icon_url = plugin_dir_url( __FILE__ ) . 'assets/img/facebook-f.png';
 	if ( $username && fb_chat_date_valid() ) :
 	?>
-	<div id="fb-chat" class="fb-chat fb-chat-<?php echo esc_attr( $position ) ?>">
+	<div id="fb-chat" class="fb-chat fb-chat-<?php echo esc_attr( $position ) ?>"">
 		<a id="fb-chat-link" class="" target="_blank" href="http://m.me/<?php echo esc_attr( $username ) ?>">
-			<img width="50" src="<?php echo esc_url( FB_CHAT_URL . 'assets/img/msg.png' ) ?>">
-			<span class="fbtooltip"><?php _e( 'Message Us', 'fb-chat' ) ?></span>
+			<img src="<?php echo esc_url( $icon_url ) ?>">
+			<span><?php echo esc_attr( $message ) ?></span>
 		</a>
 	</div>
 	<script type="text/javascript">
 		window.onload = function() {
+			var fb_wrap = document.getElementById('fb-chat');
+			if ( fb_wrap ) {
+				fb_wrap.className = fb_wrap.className + ' active';
+			}
+
 			var fb_link = document.getElementById( 'fb-chat-link' );
 			if ( fb_link ) {
 				fb_link.addEventListener('click',function(e){
@@ -278,5 +325,5 @@ function fb_chat_date_valid() {
 		}
 	}
 
-	return false;
+	return true;
 }

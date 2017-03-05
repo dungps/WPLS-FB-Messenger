@@ -1,19 +1,30 @@
 .fb-chat {
 	position: fixed;
 	display: block;
-	z-index: auto;
+	z-index: 1000000;
+	transform: translate(0%,200%) matrix(1,0,0,1,0,0);
+	transition: all .5s;
 }
 
-.fbtooltip {
+.fb-chat.active {
+	transform: translate(0%, 0%) matrix(1,0,0,1,0,0);
+}
+
+#fb-chat-link {
 	width: 120px;
-	background-color: #fff;
-	color: #2c2c2c;
+	color: #fff;
 	text-align: center;
-	padding: 5px 0;
-	border: 1px solid #eee;
+	padding: 10px 15px;
+	border: 1px solid #3b5998;
 	border-radius: 6px;
 	top: 6px;
-	text-transform: uppercase;
+	background-color: #3b5998;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+#fb-chat-link img {
+	vertical-align: middle;
 }
 
 .fb-chat.fb-chat-top_right .fbtooltip,
@@ -27,13 +38,13 @@
 }
 
 .fb-chat-bottom_right {
-	bottom: 50px;
-	right: 50px;
+	bottom: 0;
+	right: 10px;
 }
 
 .fb-chat-bottom_left {
-	bottom: 50px;
-	left: 50px;
+	bottom: 0;
+	left: 10px;
 }
 
 .fb-chat-top_right {
@@ -49,18 +60,4 @@
 body.admin-bar #fb-chat.fb-chat-top_right,
 body.admin-bar #fb-chat.fb-chat-top_left, {
 	top: 82px !important;
-}
-
-#fb-chat-link img {
-	width: 50px;
-}
-
-#fb-chat-link span {
-	z-index: 99999999;
-	position: absolute;
-	display: none;
-}
-
-#fb-chat-link:hover span {
-	display: block;
 }
